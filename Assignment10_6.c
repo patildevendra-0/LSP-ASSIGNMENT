@@ -4,8 +4,9 @@
 
 void * ThreadProc(void *ptr)
 {
-    int iNo = (int)ptr;
-    printf("value from main thread ---%d\n",iNo);
+    int iNo = *(int*)ptr;
+    printf("VALUE FROM MAIN THREAD..%d\n",iNo);
+
     pthread_exit(++iNo);
 }
 
@@ -13,10 +14,11 @@ int main()
 {
     int iRet = 0;
     pthread_t TID;
-    int iValue = 21;
+    int iValue = 51;
     int iret = 0;
 
-    iRet = pthread_create(&TID,NULL,ThreadProc,(int *)iValue);
+    
+    iRet = pthread_create(&TID,NULL,ThreadProc,&iValue);
     if(iRet != 0)
     {
         printf("UNABLE TO CREATE THREAD...\n");
@@ -24,8 +26,10 @@ int main()
     }
 
     pthread_join(TID,&iret);
+    printf("VALUE FROM THREAD..%d\n",iret);
 
-    printf("Value from Thread ----%d\n",iret);
+
+
 
     return 0;
 }
